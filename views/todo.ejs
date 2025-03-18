@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste de TODO</title>    
+</head>
+<body>
+    <div id="form">
+        <h1>Ajouter un todo</h1>
+        <form action="/addTodo" method="post">
+            <input type="text" name="prenom" placeholder="Chuck Norris"/>
+            <input type="text" name="todo" placeholder="Compter jusqu'à l'infini" />
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+    <div id="listeTodo">
+        <h1>Liste des Todos</h1>
+        <ul>
+            <% todos.forEach((todo)=>{ %>
+                <li>
+                    <%= todo.prenom %> a pour tâche : <%= todo.todo %> | <%= todo.date %>
+                    <!-- <table> 
+                    <form action="/deleteTodo" method="post">
+                        <input type="hidden" name="todo" value="<%= todo %>">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                    <table> -->
+                </li>
+            <% }) %>
+        </ul>
+        <form action="/deleteAllTodos" method="post">
+            <button type="submit">Supprimer les todos</button>
+        </form>
+    </div>
+</body>
+</html>
