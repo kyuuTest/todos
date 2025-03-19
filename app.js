@@ -56,6 +56,8 @@ app.post('/deleteTodo',(req,res)=>{
     res.redirect('/');
 });
 
+
+// Route pour l'API
 app.get('/api/todos',(req,res)=>{
     let todoList = new Array();
     let data = fs.readFileSync('public/todos.txt','utf8');
@@ -69,6 +71,14 @@ app.get('/api/todos',(req,res)=>{
     res.json(todoList);
 });
 
+app.post('/api/todos',(req,res)=>{
+    let prenom = req.body.prenom;
+    let todo = req.body.todo;
+    let date = new Date();
+
+    writeStream.write(JSON.stringify({prenom:prenom,todo:todo, date:date})+'\n');
+    res.json({prenom:prenom,todo:todo, date:date});
+});
 
 // Ecoute sur le port 3000 pour l'affichage dans la console
 app.listen(port, () => {
