@@ -54,6 +54,19 @@ app.post('/deleteTodo',(req,res)=>{
     res.redirect('/');
 });
 
+app.get('/api/todos',(req,res)=>{
+    let todoList = new Array();
+    let data = fs.readFileSync('public/todos.txt','utf8');
+    let lines = data.split('\n');
+    lines.forEach((line)=>{
+        if(line.length > 0){
+            let todo = JSON.parse(line);
+            todoList.push(todo);
+        }
+    });
+    res.json(todoList);
+});
+
 
 // Ecoute sur le port 3000 pour l'affichage dans la console
 app.listen(port, () => {
