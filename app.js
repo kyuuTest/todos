@@ -1,5 +1,6 @@
 const { name } = require('ejs');
 const express = require('express');
+const cors = require('cors')
 const app = express();
 const port = 3000;
 
@@ -7,6 +8,7 @@ app.set('view engine', 'ejs');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 const todoList = new Array();
 
