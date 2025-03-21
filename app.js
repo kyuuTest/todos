@@ -6,6 +6,7 @@ const port = 3000;
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
 const todosRoutes = require("./routes/todos");
+const fs = require("fs");
 
 app.set("view engine", "ejs");
 
@@ -15,7 +16,6 @@ app.use(express.json());
 
 const todoList = new Array();
 
-let fs = require("fs");
 let writeStream = fs.createWriteStream("public/todos.txt");
 
 // Options + routes pour l'API
