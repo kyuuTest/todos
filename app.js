@@ -5,12 +5,13 @@ const app = express();
 const port = 3000;
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
+const todosRoutes = require("./routes/todos");
 
 app.set("view engine", "ejs");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(express.json());
 
 const todoList = new Array();
 
@@ -27,7 +28,7 @@ const options = {
       description: "Documentation de l'API",
     },
   },
-  apis: ["./app.js"], // Ajuste selon tes fichiers
+  apis: ["./routes/*.js"], // Ajuste selon tes fichiers
 };
 
 const specs = swaggerJsdoc(options);
@@ -76,97 +77,7 @@ app.post("/deleteTodo", (req, res) => {
   res.redirect("/");
 });
 
-/**
- * @swagger
- * /api/todos:
- *   get:
- *     summary: Récupère toutes les tâches (todos)
- *     description: Utilisé pour récupérer la liste de toutes les tâches à faire.
- *     responses:
- *       200:
- *         description: Une réponse réussie
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   prenom:
- *                     type: string
- *                   todo:
- *                     type: string
- *                   date:
- *                     type: string
- *                     format: date
- *       400:
- *         description: Requête invalide
- */
-app.get("/api/todos", (req, res) => {
-  let todoList = new Array();
-  let data = fs.readFileSync("public/todos.txt", "utf8");
-  let lines = data.split("\n");
-  lines.forEach((line) => {
-    if (line.length > 0) {
-      let todo = JSON.parse(line);
-      todoList.push(todo);
-    }
-  });
-  res.json(todoList);
-});
-
-/**
- * @swagger
- * /api/todos:
- *   post:
- *     summary: Ajoute une nouvelle tâche (todo)
- *     description: Permet d'ajouter une nouvelle tâche avec un prénom et un texte.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               prenom:
- *                 type: string
- *                 description: Le prénom de la personne assignée à la tâche
- *                 example: "Alice"
- *               todo:
- *                 type: string
- *                 description: La description de la tâche à faire
- *                 example: "Acheter du lait"
- *     responses:
- *       200:
- *         description: Tâche ajoutée avec succès
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 prenom:
- *                   type: string
- *                   example: "Alice"
- *                 todo:
- *                   type: string
- *                   example: "Acheter du lait"
- *                 date:
- *                   type: string
- *                   format: date-time
- *                   example: "2025-03-21T14:30:00Z"
- *       400:
- *         description: Mauvaise requête (ex. données manquantes)
- */
-app.post("/api/todos", (req, res) => {
-  let prenom = req.body.prenom;
-  let todo = req.body.todo;
-  let date = new Date();
-
-  writeStream.write(
-    JSON.stringify({ prenom: prenom, todo: todo, date: date }) + "\n"
-  );
-  res.json({ prenom: prenom, todo: todo, date: date });
-});
+app.use("/api", todosRoutes);
 
 // Ecoute sur le port 3000 pour l'affichage dans la console
 app.listen(port, () => {
