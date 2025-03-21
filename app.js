@@ -32,7 +32,7 @@ const options = {
 };
 
 const specs = swaggerJsdoc(options);
-app.use("/api", swaggerUi.serve, swaggerUi.setup(specs));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 // Routes pour l'application sans passer par une API
 
