@@ -65,7 +65,17 @@ app.post("/addTodo", (req, res) => {
 });
 
 app.post("/deleteAllTodos", (req, res) => {
+  writeStream.close();
   fs.writeFile("public/todos.txt", "", () => {});
+  writeStream = fs.createWriteStream("public/todos.txt");
+  res.redirect("/");
+});
+
+// Route pour supprimer un todo
+app.post("/deleteTodo", (req, res) => {
+  let todo = req.body.todo;
+  let index = todoList.findIndex((element) => element.todo === todo);
+  todoList.splice(index, 1);
   res.redirect("/");
 });
 
