@@ -44,7 +44,9 @@ app.post('/addTodo',(req,res)=>{
 })
 
 app.post('/deleteAllTodos',(req,res)=>{
+    writeStream.close();
     fs.writeFile('public/todos.txt','',()=>{});
+    writeStream = fs.createWriteStream('public/todos.txt');
     res.redirect('/');
 })
 
