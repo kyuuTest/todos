@@ -26,10 +26,16 @@ const router = express.Router();
  *                     format: date
  */
 router.get("/todos", (req, res) => {
-  res.json([
-    { prenom: "Alice", todo: "Acheter du pain", date: "2025-03-21" },
-    { prenom: "Bob", todo: "Faire du sport", date: "2025-03-22" },
-  ]);
+  let todoList = new Array();
+  let data = fs.readFileSync("public/todos.txt", "utf8");
+  let lines = data.split("\n");
+  lines.forEach((line) => {
+    if (line.length > 0) {
+      let todo = JSON.parse(line);
+      todoList.push(todo);
+    }
+  });
+  res.json(todoList);
 });
 
 /**
